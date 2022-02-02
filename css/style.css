@@ -13,7 +13,31 @@
     width: 100%;
 }
 
+.contMsg{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
 .msg{
-    background-color: aquamarine;
     word-wrap: break-word;
+    background-color: aquamarine;
+    width: fit-content;
+    max-width: 95%;
+}
+
+.nom{
+    width: 48%;
+    color: lemonchiffon;
+    font-weight: bold;
+}
+
+.data{
+    text-align: right;
+    float: right;
+    color: lemonchiffon;
+    width: 48%;
+}
+
+.meu{
+    color:orange;
 }

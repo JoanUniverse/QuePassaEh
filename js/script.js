@@ -14,7 +14,7 @@ window.onload = function () {
     id_usuari = document.getElementById("idUsuari");
     benvinguda = document.getElementById("benvinguda");
     document.getElementById("loginButton").addEventListener("click", comprovaLogin);
-    //document.getElementById("missatgeButton").addEventListener("click", enviaMissatge);
+    document.getElementById("missatgeButton").addEventListener("click", enviaMissatge);
 }
 
 function login(email, password){
@@ -72,7 +72,7 @@ function enviaMissatge(){
         var formData = new FormData();
         formData.append('codiusuari', id_usuari);
         formData.append('msg', missatge);
-        fetch(url_login,{method: 'POST', body:formData}
+        fetch(url_missatges,{method: 'POST', body:formData}
             )
             .then(resposta => {
                 console.log(resposta);
@@ -85,7 +85,8 @@ function enviaMissatge(){
             .then(
                 json => {
                     if(json.correcta){
-                        //TODO
+                        document.getElementById("missatgeInput").value = "";
+                        recuperaMissatges();
                     } else{
                         alert("ERROR");
                     }
@@ -124,21 +125,39 @@ function recuperaMissatges(){
 
 function mostraMissatges(dades){
     var missatges = document.getElementById("llistaMissatges");
+    let nom = "";
     missatges.innerHTML = "";
     dades.dades.forEach(missatge => {
         let div = document.createElement("div");
         let divCont = document.createElement("div");
         let divNom = document.createElement("div");
+        let divData = document.createElement("div");
         div.setAttribute("class", "flex-shrink-1 bg-light rounded py-2 px-3 ml-3 msg");
-        divNom.setAttribute("class", "flex-shrink-1 bg-light rounded py-2 px-3 ml-3");
-        divCont.setAttribute("class", "chat-message-left pb-4");
+        divData.setAttribute("class", "data");
+        divCont.setAttribute("class", "chat-message-left pb-4 contMsg");
+
+        if (missatge.codiusuari === id_usuari){
+            divNom.setAttribute("class", "nom meu");
+            nom = document.createTextNode("Jo");
+        } else{
+            divNom.setAttribute("class", "nom");
+            nom = document.createTextNode(missatge.nom);
+        }
 
         let text = document.createTextNode(missatge.msg);
-        let nom = document.createTextNode(missatge.nom);
+        let data = document.createTextNode(missatge.datahora);
+
+        divData.appendChild(data);
         divNom.appendChild(nom);
         div.appendChild(text);
-        divCont.appendChild(divNom);
+
+        let row = document.createElement("div");
+        row.setAttribute("class", "row");
+        row.appendChild(divNom);
+        row.appendChild(divData);
+        divCont.appendChild(row);
         divCont.appendChild(div);
         missatges.appendChild(divCont);
+        missatges.scrollTop = missatges.scrollHeight;
     });
 }
