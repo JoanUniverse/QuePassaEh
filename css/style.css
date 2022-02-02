@@ -5,10 +5,15 @@
 #llistaMissatges{
     margin-top: 20px;
     height: 500px;
-    overflow: scroll;
-    background-color: aquamarine;
+    overflow-y: scroll;
+    background-color: cadetblue;
 }
 
 #missatgeInput{
     width: 100%;
+}
+
+.msg{
+    background-color: aquamarine;
+    word-wrap: break-word;
 }

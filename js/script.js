@@ -63,6 +63,7 @@ function loginCorrecte(dades){
     finestraMissatge.style.display = "block";
     console.log(dades);
     benvinguda.innerHTML = "Benvingut " + dades.dades.nom;
+    recuperaMissatges();
 }
 
 function enviaMissatge(){
@@ -94,4 +95,50 @@ function enviaMissatge(){
                 error => console.log(error)
             );
     }
+}
+
+function recuperaMissatges(){
+    fetch(url_missatges,{method: 'GET'}
+        )
+        .then(resposta => {
+            console.log(resposta);
+            if (resposta.ok) {
+                return resposta.json();
+            } else {
+                alert('Error: ' + resposta.status);
+            }
+        })
+        .then(
+            json => {
+                if(json.correcta){
+                    mostraMissatges(json);
+                } else{
+                    alert("ERROR");
+                }
+            }
+        )
+        .catch(
+            error => console.log(error)
+        );
+}
+
+function mostraMissatges(dades){
+    var missatges = document.getElementById("llistaMissatges");
+    missatges.innerHTML = "";
+    dades.dades.forEach(missatge => {
+        let div = document.createElement("div");
+        let divCont = document.createElement("div");
+        let divNom = document.createElement("div");
+        div.setAttribute("class", "flex-shrink-1 bg-light rounded py-2 px-3 ml-3 msg");
+        divNom.setAttribute("class", "flex-shrink-1 bg-light rounded py-2 px-3 ml-3");
+        divCont.setAttribute("class", "chat-message-left pb-4");
+
+        let text = document.createTextNode(missatge.msg);
+        let nom = document.createTextNode(missatge.nom);
+        divNom.appendChild(nom);
+        div.appendChild(text);
+        divCont.appendChild(divNom);
+        divCont.appendChild(div);
+        missatges.appendChild(divCont);
+    });
 }
