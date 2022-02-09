@@ -1,4 +1,12 @@
-#missatge{
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    min-height: 100vh;
+}
+
+#missatge, #perfil{
     display: none;
 }
 

@@ -1,20 +1,55 @@
-var url = "http://webservers2w.westeurope.cloudapp.azure.com/quepassaeh/server/public/";
+var url = "http://missatgeria.dawpaucasesnoves.com/api/public/";
 const url_login = url + "login/";
 const url_missatges = url + "provamissatge/";
+const url_usuari = url + "provausuari/";
 var finestraMissatge;
 var finestraLogin;
+var finestraPerfil;
 var token;
 var id_usuari;
 var benvinguda;
+var missatges;
 
 window.onload = function () {
+    missatges = document.getElementById("llistaMissatges");
     finestraMissatge = document.getElementById("missatge");
     finestraLogin = document.getElementById("login");
+    finestraPerfil = document.getElementById("perfil");
     token = document.getElementById("token");
     id_usuari = document.getElementById("idUsuari");
     benvinguda = document.getElementById("benvinguda");
     document.getElementById("loginButton").addEventListener("click", comprovaLogin);
     document.getElementById("missatgeButton").addEventListener("click", enviaMissatge);
+    document.getElementById("perfilButton").addEventListener("click", canviaPerfil);
+    document.getElementById("cancelaPerfil").addEventListener("click", canviaMissatge);
+    document.getElementById("dataInput").addEventListener("change", missatgesData);
+}
+
+function missatgesData(){
+    var data = document.getElementById("dataInput").value.replaceAll("-", "/");
+    fetch(url_missatges + data,{method: 'GET'}
+    )
+    .then(resposta => {
+        console.log(resposta);
+        if (resposta.ok) {
+            return resposta.json();
+        } else {
+            alert('Error: ' + resposta.status);
+        }
+    })
+    .then(
+        json => {
+            if(json.correcta){
+                missatges.innerHTML = ""
+                afegeixNousMissatges(json);
+            } else{
+                alert("ERROR");
+            }
+        }
+    )
+    .catch(
+        error => console.log(error)
+    );
 }
 
 function login(email, password){
@@ -60,10 +95,21 @@ function comprovaLogin(){
 
 function loginCorrecte(dades){
     finestraLogin.style.display = "none";
-    finestraMissatge.style.display = "block";
+    finestraMissatge.style.display = "flex";
     console.log(dades);
     benvinguda.innerHTML = "Benvingut " + dades.dades.nom;
+    setInterval(comprovaMissatgesNous, 5000);
     recuperaMissatges();
+}
+
+function canviaPerfil(){
+    finestraMissatge.style.display = "none";
+    finestraPerfil.style.display = "flex";
+    rellenaPerfil();
+}
+function canviaMissatge(){
+    finestraPerfil.style.display = "none";
+    finestraMissatge.style.display = "flex";
 }
 
 function enviaMissatge(){
@@ -86,7 +132,7 @@ function enviaMissatge(){
                 json => {
                     if(json.correcta){
                         document.getElementById("missatgeInput").value = "";
-                        recuperaMissatges();
+                        comprovaMissatgesNous();
                     } else{
                         alert("ERROR");
                     }
@@ -112,7 +158,7 @@ function recuperaMissatges(){
         .then(
             json => {
                 if(json.correcta){
-                    mostraMissatges(json);
+                    afegeixNousMissatges(json);
                 } else{
                     alert("ERROR");
                 }
@@ -123,10 +169,35 @@ function recuperaMissatges(){
         );
 }
 
-function mostraMissatges(dades){
-    var missatges = document.getElementById("llistaMissatges");
+function comprovaMissatgesNous(){
+    fetch(url_missatges + id_usuari,{method: 'GET'}
+    )
+    .then(resposta => {
+        console.log(resposta);
+        if (resposta.ok) {
+            return resposta.json();
+        } else {
+            alert('Error: ' + resposta.status);
+        }
+    })
+    .then(
+        json => {
+            if(json.correcta){
+                if(json.rowcount != 0){
+                    afegeixNousMissatges(json);
+                }
+            } else{
+                alert("ERROR");
+            }
+        }
+    )
+    .catch(
+        error => console.log(error)
+    );
+}
+
+function afegeixNousMissatges(dades){
     let nom = "";
-    missatges.innerHTML = "";
     dades.dades.forEach(missatge => {
         let div = document.createElement("div");
         let divCont = document.createElement("div");
@@ -160,4 +231,31 @@ function mostraMissatges(dades){
         missatges.appendChild(divCont);
         missatges.scrollTop = missatges.scrollHeight;
     });
+}
+
+function rellenaPerfil(){
+    fetch(url_usuari + id_usuari,{method: 'GET'}
+    )
+    .then(resposta => {
+        console.log(resposta);
+        if (resposta.ok) {
+            return resposta.json();
+        } else {
+            alert('Error: ' + resposta.status);
+        }
+    })
+    .then(
+        json => {
+            if(json.correcta){
+                document.getElementById("nomPerfil").value = json.dades.nom;
+                document.getElementById("emailPerfil").value = json.dades.email;
+                document.getElementById("fotoPerfil").value = json.dades.foto;
+            } else{
+                alert("ERROR");
+            }
+        }
+    )
+    .catch(
+        error => console.log(error)
+    );
 }

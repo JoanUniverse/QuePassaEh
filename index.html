@@ -10,41 +10,75 @@
     <title>Que Passa Eh?</title>
 </head>
 <body>
-    <div id="login" class="container">
-        <div class="row">
-            <div class="col-md-2 float-right"><label for="usuari">Usuari: </label></div>
-            <div class="col-md-3"><input id="usuari" type="text" placeholder="Usuari" value="joanquetglas@paucasesnovescifp.cat" required></div>
-
-        </div>
-
-        <div class="row">
-            <div class="col-md-2"><label for="pass">Contrassenya: </label></div>
-            <div class="col-md-3"><input id="pass" type="password" placeholder="Contrassenya" value="s2w" required></div>
-        </div>
-        <div class="row">
-            <div class="col-md-1 float-left">
-                <button id="loginButton">
-                    Login
-                </button>
+    <div class="jumbotron vertical-center">
+        <div id="login" class="container vertical-center">
+            <div class="row">
+                <div class="col-md-2 float-right"><label for="usuari">Usuari: </label></div>
+                <div class="col-md-3"><input id="usuari" type="text" placeholder="Usuari" value="joanquetglas@paucasesnovescifp.cat" required></div>
+    
+            </div>
+    
+            <div class="row">
+                <div class="col-md-2"><label for="pass">Contrassenya: </label></div>
+                <div class="col-md-3"><input id="pass" type="password" placeholder="Contrassenya" value="s2w" required></div>
+            </div>
+            <div class="row">
+                <div class="col-md-1 float-left">
+                    <button id="loginButton">
+                        Login
+                    </button>
+                </div>
             </div>
         </div>
-    </div>
-    <div id="missatge" class="container">
-        <div class="row">
-            <p id="benvinguda"></p>
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <input type="text" id="missatgeInput">
+        <div id="missatge" class="container vertical-center">
+            <div class="row">
+                <p id="benvinguda"></p>
             </div>
-            <div class="col-md-2">
-                <button id="missatgeButton">Enviar</button>
+            <div class="row">
+                <div class="col-md-3">
+                    <input type="text" id="missatgeInput">
+                </div>
+                <div class="col-md-1">
+                    <button id="missatgeButton">Enviar</button>
+                </div>
+                <div class="col-md-2">
+                    <button id="perfilButton">Editar perfil</button>
+                </div>
+                <div class="col-md-2">
+                    <input type="date" id="dataInput">
+                </div>
+            </div>
+    
+            <div class="col-md-8" id="llistaMissatges">
+            </div>
+    
+        </div>
+        <div id="perfil" class="container vertical-center">
+            <div class="row">
+                <div class="col-md-2 float-right"><label for="usuari">Nom: </label></div>
+                <div class="col-md-3"><input id="nomPerfil" type="text"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 float-right"><label for="usuari">Correu electrònic: </label></div>
+                <div class="col-md-3"><input id="emailPerfil" type="text"></div>
+            </div>
+            <!-- <div class="row">
+                <div class="col-md-2"><label for="pass">Contrassenya: </label></div>
+                <div class="col-md-3"><input id="passPerfil" type="password" ></div>
+            </div> -->
+            <div class="row">
+                <div class="col-md-2"><label for="pass">Foto: </label></div>
+                <div class="col-md-3"><input id="fotoPerfil" type="file" ></div>
+            </div>
+            <div class="row">
+                <div class="col-md-1">            
+                    <button id="guardaPerfil">Guardar</button>
+                </div>
+                <div class="col-md-1">            
+                    <button id="cancelaPerfil">Cancelar</button>
+                </div>
             </div>
         </div>
-
-        <div class="col-md-6" id="llistaMissatges">
-        </div>
-
     </div>
     <input type="hidden" id="token">
     <input type="hidden" id="idUsuari">
