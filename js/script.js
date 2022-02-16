@@ -9,6 +9,7 @@ var token;
 var id_usuari;
 var benvinguda;
 var missatges;
+var pass;
 
 window.onload = function () {
     missatges = document.getElementById("llistaMissatges");
@@ -23,6 +24,7 @@ window.onload = function () {
     document.getElementById("perfilButton").addEventListener("click", canviaPerfil);
     document.getElementById("cancelaPerfil").addEventListener("click", canviaMissatge);
     document.getElementById("dataInput").addEventListener("change", missatgesData);
+    document.getElementById("guardaPerfil").addEventListener("click", actualitzaPerfil);
 }
 
 function missatgesData(){
@@ -84,7 +86,7 @@ function login(email, password){
 
 function comprovaLogin(){
     var usuari = document.getElementById("usuari").value.trim();
-    var pass = document.getElementById("pass").value.trim();
+    pass = document.getElementById("pass").value.trim();
     if(usuari != "" && pass != ""){
         console.log("Login");
         login(usuari, pass);
@@ -233,6 +235,8 @@ function afegeixNousMissatges(dades){
     });
 }
 
+//PERFIL
+
 function rellenaPerfil(){
     fetch(url_usuari + id_usuari,{method: 'GET'}
     )
@@ -250,6 +254,7 @@ function rellenaPerfil(){
                 document.getElementById("nomPerfil").value = json.dades.nom;
                 document.getElementById("emailPerfil").value = json.dades.email;
                 document.getElementById("fotoPerfil").value = json.dades.foto;
+                document.getElementById("passPerfil").value = pass;
             } else{
                 alert("ERROR");
             }
@@ -258,4 +263,34 @@ function rellenaPerfil(){
     .catch(
         error => console.log(error)
     );
+}
+
+function actualitzaPerfil(){
+    var formData = new FormData();
+    formData.append('email', document.getElementById("emailPerfil").value);
+    formData.append('nom', document.getElementById("nomPerfil").value);
+    formData.append('password', document.getElementById("passPerfil").value);
+    formData.append('foto', document.getElementById("fotoPerfil").files[0]);
+    fetch(url_usuari + id_usuari,{method: 'POST', body:formData}
+        )
+        .then(resposta => {
+            console.log(resposta);
+            if (resposta.ok) {
+                return resposta.json();
+            } else {
+                alert('Error: ' + resposta.status);
+            }
+        })
+        .then(
+            json => {
+                if(json.correcta){
+                    console.log(json);
+                } else{
+                    alert("ERROR");
+                }
+            }
+        )
+        .catch(
+            error => console.log(error)
+        );
 }
